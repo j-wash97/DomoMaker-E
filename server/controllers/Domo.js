@@ -54,21 +54,21 @@ const domoPage = (req, res) => Domo.DomoModel.find({}).lean().exec((err, docs) =
   }
 
   // Form a "join" on the domos with the usernames of their respective owners
-  const joinedDomos = [];
-  
-  docs.forEach(domo => models.Account.AccountModel.findOne({ _id: domo.owner }, (err, doc) => joinedDomos.push({
-    name: domo.name,
-    age: domo.age,
-    color: domo.color,
-    owner: doc.username
+  const jd = [];
+
+  docs.forEach((d) => models.Account.AccountModel.findOne({ _id: d.owner }, (e, doc) => jd.push({
+    name: d.name,
+    age: d.age,
+    color: d.color,
+    owner: doc.username,
   })));
 
-  return res.render('domos', { domos: joinedDomos });
+  return res.render('domos', { domos: jd });
 });
 
 module.exports = {
   makerPage,
   maker,
   getDomos,
-  domoPage
+  domoPage,
 };
