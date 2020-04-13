@@ -22,6 +22,7 @@ const maker = (req, res) => {
     name: req.body.name,
     age: req.body.age,
     owner: req.session.account._id,
+    color: req.body.color,
   }).save();
 
   savePromise.then(() => res.json({ redirect: '/maker' }));
@@ -46,8 +47,28 @@ const getDomos = (req, res) => Domo.DomoModel.findByOwner(req.session.account._i
   return res.json({ domos: docs });
 });
 
+const domoPage = (req, res) => Domo.DomoModel.find({}).lean().exec((err, docs) => {
+  if (err) {
+    console.log(err);
+    return res.status(400).json({ error: 'An error occurred' });
+  }
+
+  // Form a "join" on the domos with the usernames of their respective owners
+  const joinedDomos = [];
+  
+  docs.forEach(domo => models.Account.AccountModel.findOne({ _id: domo.owner }, (err, doc) => joinedDomos.push({
+    name: domo.name,
+    age: domo.age,
+    color: domo.color,
+    owner: doc.username
+  })));
+
+  return res.render('domos', { domos: joinedDomos });
+});
+
 module.exports = {
   makerPage,
   maker,
   getDomos,
+  domoPage
 };

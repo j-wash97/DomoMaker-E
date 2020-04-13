@@ -8,7 +8,7 @@ const DomoList = props => {
     }
 
     const domoNodes = props.domos.map(domo => (
-        <div className="domo" key={domo._id}>
+        <div className="domo" key={domo._id} style={{ backgroundColor: domo.color, borderColor: domo.color }}>
             <img src="/assets/img/domoface.jpeg" alt="Domo Face" className="domoFace"/>
             <h3 className="domoName">Name: {domo.name}</h3>
             <h3 className="domoAge">Age: {domo.age}</h3>
@@ -45,6 +45,8 @@ const DomoForm = props => (
         <input type="text" name="name" id="domoName" placeholder="Domo Name"/>
         <label htmlFor="age">Age: </label>
         <input type="number" name="age" id="domoAge" placeholder="Domo Age"/>
+        <label htmlFor="color">Color: </label>
+        <input type="color" name="color" id="domoColor"/>
         <input type="hidden" name="_csrf" value={props.csrf}/>
         <input type="submit" value="Make Domo" className="makeDomoSubmit"/>
     </form>

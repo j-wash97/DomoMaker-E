@@ -28,6 +28,11 @@ const DomoSchema = new mongo.Schema({
     type: Date,
     default: Date.now,
   },
+  color: {
+    type: String,
+    default: '#55acee',
+    set: setName,
+  },
 });
 
 DomoSchema.statics.toAPI = (doc) => ({
@@ -40,6 +45,9 @@ DomoSchema.statics.findByOwner = (id, cb) => DomoModel.find({ owner: mongo.Types
   .exec(cb);
 
 DomoModel = mongo.model('Domo', DomoSchema);
+
+// Update existing documents in the collection with the added color field
+DomoModel.updateMany({ color: { $exists: false } }, { color: '#55acee' }, (err, res) => console.log(`Domos matched:${res.n}   Domos modified:${res.nModified}`));
 
 module.exports = {
   DomoModel,

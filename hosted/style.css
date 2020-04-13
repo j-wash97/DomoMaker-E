@@ -67,7 +67,7 @@ nav:nth-child(1) {
     color: white;
 }
 
-.domoForm input[type=text] {
+.domoForm input[type=text], .domoForm input[type=number], .domoForm input[type=color] {
     float:left;
 }
 
